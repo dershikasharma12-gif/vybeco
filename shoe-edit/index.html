@@ -422,8 +422,13 @@ const img = (file, alt, lazy=true, sizes="(max-width:640px) 50vw, 300px") => laz
 // photos load as soon as their shoe is near the screen (all of a shoe's photos together, so side-swipes never show a blank)
 const loadImg = im => { if (!im.dataset.src) return; if (im.dataset.srcset) im.srcset = im.dataset.srcset; im.src = im.dataset.src; delete im.dataset.src; delete im.dataset.srcset; im.classList.remove("lz"); };
 const loadIn = el => el.querySelectorAll("img[data-src]").forEach(loadImg);
-const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ loadIn(e.target); io.unobserve(e.target); } }), {rootMargin: "700px 0px"}) : null;
-const watch = root => root.querySelectorAll(".shelf, .card").forEach(el => io ? io.observe(el) : loadIn(el));
+let pending = [];
+const nearCheck = () => { const h = innerHeight || 800;
+  pending = pending.filter(el => { if (!el.isConnected) return false; const r = el.getBoundingClientRect();
+    if (r.bottom > -700 && r.top < h + 700){ loadIn(el); return false; } return true; }); };
+let nearT = 0; const nearSoon = () => { if (!nearT) nearT = setTimeout(() => { nearT = 0; nearCheck(); }, 120); };
+addEventListener("scroll", nearSoon, {passive: true}); addEventListener("resize", nearSoon);
+const watch = root => { pending.push(...root.querySelectorAll(".shelf, .card")); nearCheck(); setTimeout(nearCheck, 400); };
 // a photo that fails (patchy mobile data) gets one quiet retry
 document.addEventListener("error", e => { const im = e.target; if (!im || im.tagName !== "IMG" || im.dataset.retry) return;
   im.dataset.retry = 1; const u = (im.currentSrc || im.src || "").split("?")[0]; if (!u) return; im.removeAttribute("srcset");
