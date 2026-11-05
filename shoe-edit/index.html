@@ -122,6 +122,7 @@ header.solid .logo{filter:none}
 .empty{grid-column:1/-1;color:var(--muted);padding:30px 0;font-family:var(--mono);font-size:12px;text-transform:uppercase}
 
 /* sold out */
+img.lz{color:transparent}
 .sw.x{position:relative;opacity:.55}
 .sw.x::after{content:"";position:absolute;left:-2px;right:-2px;top:50%;height:1.5px;background:var(--ink);transform:rotate(-30deg)}
 .soldph{opacity:.5;filter:grayscale(.5)}
@@ -415,7 +416,18 @@ products.forEach(p => { if (!p.soldCols) return;
   p.colours = [...p.colours.filter(c => !colSold(p, c)), ...p.colours.filter(c => colSold(p, c))]; });
 const label = p => `${p.name}${p.colours.length?', '+p.colours.join(' / '):''}`;
 // light copy (600px) for shelves and cards, full 1080px only where the image is shown large
-const img = (file, alt, lazy=true, sizes="(max-width:640px) 50vw, 300px") => `<img class="cut" src="img/s/${file}" srcset="img/s/${file} 600w, img/${file} 1080w" sizes="${sizes}" alt="${alt}" ${lazy?'loading="lazy"':'fetchpriority="high"'} decoding="async">`;
+const img = (file, alt, lazy=true, sizes="(max-width:640px) 50vw, 300px") => lazy
+  ? `<img class="cut lz" data-src="img/s/${file}" data-srcset="img/s/${file} 600w, img/${file} 1080w" sizes="${sizes}" alt="${alt}" decoding="async">`
+  : `<img class="cut" src="img/s/${file}" srcset="img/s/${file} 600w, img/${file} 1080w" sizes="${sizes}" alt="${alt}" fetchpriority="high" decoding="async">`;
+// photos load as soon as their shoe is near the screen (all of a shoe's photos together, so side-swipes never show a blank)
+const loadImg = im => { if (!im.dataset.src) return; if (im.dataset.srcset) im.srcset = im.dataset.srcset; im.src = im.dataset.src; delete im.dataset.src; delete im.dataset.srcset; im.classList.remove("lz"); };
+const loadIn = el => el.querySelectorAll("img[data-src]").forEach(loadImg);
+const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ loadIn(e.target); io.unobserve(e.target); } }), {rootMargin: "700px 0px"}) : null;
+const watch = root => root.querySelectorAll(".shelf, .card").forEach(el => io ? io.observe(el) : loadIn(el));
+// a photo that fails (patchy mobile data) gets one quiet retry
+document.addEventListener("error", e => { const im = e.target; if (!im || im.tagName !== "IMG" || im.dataset.retry) return;
+  im.dataset.retry = 1; const u = (im.currentSrc || im.src || "").split("?")[0]; if (!u) return; im.removeAttribute("srcset");
+  setTimeout(() => { im.src = u + "?r=" + Date.now(); }, 900); }, true);
 const slug = c => c.toLowerCase().replace(/[^a-z]+/g,"-");
 const $ = id => document.getElementById(id);
 const totalPairs = products.filter(p=>!p.sold).reduce((a,p)=>a+p.left,0);
@@ -439,6 +451,7 @@ $("shelves").innerHTML = cats.map(c => {
         <div class="cap"><span class="nm">${p.name}</span><span class="pr">${inr(p.price)}</span>${p.colours.length>1?`<span class="sws" aria-label="${p.colours.length} colours: ${p.colours.join(', ')}">${p.colours.map(c=>swatch(c, colSold(p,c))).join("")}</span>`:""}</div></button>`).join("")}</div>
   </div></section>`;
 }).join("");
+watch($("shelves"));
 document.querySelectorAll(".rail-nav button").forEach(b => b.addEventListener("click", () => {
   const rail = b.closest(".wrap").querySelector(".rail");
   rail.scrollBy({left: b.dataset.dir * rail.clientWidth * 0.8, behavior: "smooth"});
@@ -461,10 +474,11 @@ function renderGrid(){
   list = soldLast(list);
   $("resultCount").textContent = `${list.length} ${list.length===1?"design":"designs"}`;
   $("grid").innerHTML = list.length ? list.map(p => `<div class="card${p.sold?' is-sold':''}" role="button" tabindex="0" aria-label="${p.name}${p.sold?', sold out':''}" data-id="${p.id}">
-      <div class="ph">${ptag(p)}${cbadge(p)}<div class="strip">${GALLERY[p.id].map((e,i)=>img(e[0], `${p.name}${e[1]?', '+e[1]:''}${colSold(p,e[1])?' (sold out)':''}, photo ${i+1}`).replace('class="cut"', colSold(p,e[1])?'class="cut soldph"':'class="cut"')).join("")}</div>${GALLERY[p.id].length>1?`<div class="cbar">${GALLERY[p.id].map((_,i)=>`<span class="${i?'':'on'}"></span>`).join("")}</div><button type="button" class="cnav l" data-cnav="-1" aria-label="Previous photo">←</button><button type="button" class="cnav r" data-cnav="1" aria-label="Next photo">→</button>`:""}</div>
+      <div class="ph">${ptag(p)}${cbadge(p)}<div class="strip">${GALLERY[p.id].map((e,i)=>img(e[0], `${p.name}${e[1]?', '+e[1]:''}${colSold(p,e[1])?' (sold out)':''}, photo ${i+1}`).replace('class="cut', colSold(p,e[1])?'class="cut soldph':'class="cut')).join("")}</div>${GALLERY[p.id].length>1?`<div class="cbar">${GALLERY[p.id].map((_,i)=>`<span class="${i?'':'on'}"></span>`).join("")}</div><button type="button" class="cnav l" data-cnav="-1" aria-label="Previous photo">←</button><button type="button" class="cnav r" data-cnav="1" aria-label="Next photo">→</button>`:""}</div>
       <span class="nm">${p.name}</span>
       <span class="meta"><span>${p.colours.length>1?p.colours.length+' colours':p.colours[0]}</span><span>${inr(p.price)}</span></span>${p.colours.length>1?`<span class="sws" role="group" aria-label="Colours">${p.colours.map((c,k)=>{const gi=GALLERY[p.id].findIndex(e=>e[1]===c);return gi>=0?`<button type="button" aria-pressed="${k===0}" aria-label="${c}${colSold(p,c)?', sold out':''}" title="${c}${colSold(p,c)?' (sold out)':''}" data-card-col="${gi}">${swatch(c, colSold(p,c))}</button>`:`<span title="${c}">${swatch(c, colSold(p,c))}</span>`}).join("")}</span>`:""}</div>`).join("")
     : `<div class="empty">Nothing in this style right now.</div>`;
+  watch($("grid"));
 }
 renderGrid();
 
@@ -485,9 +499,10 @@ function open(id, start = 0){
   const cols = [...new Set(g.map(e => e[1]).filter(Boolean))];
   $("dHero").innerHTML = `<div class="galwrap"><div class="gal" id="gal">${g.map((e,i)=>`<div class="fr${colSold(p,e[1])?' sold':''}">${img(e[0], alt(e,i), i>1, "(max-width:640px) 100vw, 560px")}${colSold(p,e[1])?`<span class="frsold">${e[1]} · Sold out</span>`:''}</div>`).join("")}</div>`
     + `<div class="pager"><button type="button" data-step="-1" aria-label="Previous shoe">←</button><button type="button" data-step="1" aria-label="Next shoe">→</button></div></div>`
-    + (g.length>1 ? `<div class="thumbs" id="thumbs">${g.map((e,i)=>`<button type="button" aria-label="Show ${alt(e,i)}" aria-current="${i===0}" data-ph="${i}"><img src="img/${e[0]}" alt="" loading="lazy"></button>`).join("")}</div>` : "")
+    + (g.length>1 ? `<div class="thumbs" id="thumbs">${g.map((e,i)=>`<button type="button" aria-label="Show ${alt(e,i)}" aria-current="${i===0}" data-ph="${i}"><img src="img/s/${e[0]}" alt="" decoding="async"></button>`).join("")}</div>` : "")
     + (cols.length>1 ? `<div class="swatches" id="swatches"><span class="lab">Colour: <b id="swName">${cols[0]}</b><span id="swSold" class="swsold" hidden> · sold out</span></span><span class="row">${cols.map((c,k)=>`<button type="button" aria-pressed="${k===0}" aria-label="${c}${colSold(p,c)?', sold out':''}" title="${c}${colSold(p,c)?' (sold out)':''}" data-col="${g.findIndex(e=>e[1]===c)}">${swatch(c, colSold(p,c))}</button>`).join("")}</span></div>`
        : p.colours.length>1 ? `<div class="swatches"><span class="lab">Colours: <b>${p.colours.join(', ')}</b></span><span class="row">${p.colours.map(c=>`<span style="padding:3px;line-height:0">${swatch(c)}</span>`).join("")}</span></div>` : "");
+  loadIn($("dHero"));
   $("dTitle").textContent = p.name;
   $("dPrice").textContent = inr(p.price);
   $("dRarity").textContent = rarity(p);
