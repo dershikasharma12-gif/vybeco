@@ -121,6 +121,33 @@ header.solid .logo{filter:none}
 .card .meta span:last-child{color:var(--ink)}
 .empty{grid-column:1/-1;color:var(--muted);padding:30px 0;font-family:var(--mono);font-size:12px;text-transform:uppercase}
 
+/* sold out */
+.sw.x{position:relative;opacity:.55}
+.sw.x::after{content:"";position:absolute;left:-2px;right:-2px;top:50%;height:1.5px;background:var(--ink);transform:rotate(-30deg)}
+.soldph{opacity:.5;filter:grayscale(.5)}
+.fr.sold{position:relative}
+.fr.sold img{opacity:.5;filter:grayscale(.5)}
+.frsold{position:absolute;top:10px;left:10px;background:var(--ink);color:var(--bg);font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:4px 7px}
+.swsold{color:var(--ink)}
+.tag.sold{background:var(--ink);color:var(--bg);padding:3px 6px}
+.stage .tag.sold{top:0}
+.is-sold .stage img,.is-sold .strip img{opacity:.45;filter:grayscale(.6)}
+.is-sold .cap .pr,.card.is-sold .meta span:last-child{text-decoration:line-through;color:var(--muted)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+/* policy */
+.policy{padding-block:56px 10px;scroll-margin-top:80px}
+.policy .col-head{margin-bottom:22px}
+.pol{display:grid;gap:0;max-width:720px;margin:0 auto;border-top:1px solid var(--line)}
+.pol details{border-bottom:1px solid var(--line)}
+.pol summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:12px;padding:16px 0;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.pol summary::-webkit-details-marker{display:none}
+.pol summary::after{content:"+";font-size:15px;line-height:1}
+.pol details[open] summary::after{content:"–"}
+.pol .body{padding:0 0 18px;font-size:13px;color:var(--muted);display:grid;gap:10px}
+.pol .body p{margin:0}
+.pol .body b{color:var(--ink);font-weight:500}
+.pol-note{margin:2px 0 0;text-align:center;font-size:11.5px;color:var(--muted)}
+.pol-note a,footer .fine a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 /* footer */
 footer{border-top:1px solid var(--line);padding-block:44px 48px;font-size:12px;color:var(--muted);margin-top:30px}
 footer .wrap{display:grid;gap:22px;justify-items:center;text-align:center}
@@ -254,6 +281,21 @@ footer .logo{filter:none;height:30px}
       <div class="grid" id="grid"></div>
     </div>
   </section>
+  <section class="wrap policy" id="policy">
+    <div class="col-head"><div class="eyebrow">Before you buy</div><h2>Shipping &amp; returns</h2></div>
+    <div class="pol">
+      <details open><summary>All sales are final</summary><div class="body">
+        <p>Every design comes in one to three pairs and is never restocked, so <b>we don't accept returns or exchanges</b>.</p>
+        <p>Not sure about your size? Message us on WhatsApp before you buy and we'll help you choose.</p></div></details>
+      <details><summary>Damaged or wrong pair</summary><div class="body">
+        <p>If your pair arrives damaged, or it isn't the design, colour or size you ordered, message us on WhatsApp at <b>+91 82939 29011</b> <b>within 48 hours of delivery</b>.</p>
+        <p>Please send an <b>unboxing video</b> that starts with the sealed parcel and shows it being opened. We can't accept a claim without one.</p>
+        <p>Once we've checked your video, we cover the shipping and sort it out with you.</p></div></details>
+      <details><summary>Shipping</summary><div class="body">
+        <p>Order on WhatsApp and we'll share the payment details. Once payment is confirmed, we ship your pairs by India Post.</p>
+        <p>Every pair is held for the first buyer who completes payment.</p></div></details>
+    </div>
+  </section>
 </main>
 
 <footer><div class="wrap">
@@ -263,6 +305,7 @@ footer .logo{filter:none;height:30px}
     <span>1st Floor, Panchana Building, Gyan Jyoti More, Siliguri (W.B.) 734003</span>
     <span>instagram.com/vybeco.in</span>
     <span>No restocks · Online orders ship via India Post</span>
+    <span>All sales final · <a href="#policy">Shipping &amp; returns</a></span>
   </div>
 </div></footer>
 
@@ -284,6 +327,7 @@ footer .logo{filter:none;height:30px}
       <button class="btn ghost" id="dAdd" type="button">Add to bag</button>
       <p class="urgency" id="dUrg"></p>
       <button class="linkbtn" id="dBag" type="button" hidden>View bag</button>
+      <p class="pol-note">All sales final. Damaged or wrong pair? Tell us within 48 hours with an unboxing video. <a href="#policy" data-policy>Shipping &amp; returns</a></p>
     </div>
   </div>
 </section>
@@ -299,90 +343,100 @@ footer .logo{filter:none;height:30px}
       <label for="cNote">Note (optional)</label><input id="cNote" name="cNote" placeholder="Anything we should know">
     </form>
     <a class="btn wa-btn" id="waSend" href="#" target="_blank" rel="noopener">Buy now on WhatsApp</a>
-    <p class="bag-fine">WhatsApp opens with your order typed in. Tap Send and we'll share payment details and dispatch your pairs. Every design is one to three pairs only, so pairs are held for the first buyer. Our number: <span id="waNum">+91 82939 29011</span> <button type="button" id="copyWa">Copy</button></p>
+    <p class="bag-fine">WhatsApp opens with your order typed in. Tap Send and we'll share payment details and dispatch your pairs. Every design is one to three pairs only, so pairs are held for the first buyer. All sales are final, with no returns or exchanges (<a href="#policy" data-policy style="color:inherit">see our policy</a>). Our number: <span id="waNum">+91 82939 29011</span> <button type="button" id="copyWa">Copy</button></p>
   </div>
 </section>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
 const products = [
-  {id:"r10", n:2, name:"Crinkle Point Mule",      cat:"Mules",        colours:["Sky blue","Blush pink"],    price:3460, left:2, sizes:[36,38], note:"Pointed toe, crinkled patent, slim heel", desc:"A sharp pointed mule in soft crinkled patent. Comes in sky blue and blush pink.", item:"N1", imgs:3},
+  {id:"r10", n:2, name:"Crinkle Point Mule",      cat:"Mules",        colours:["Sky blue","Blush pink"], soldCols:["Blush pink"],    price:3460, left:1, sizes:[38], note:"Pointed toe, crinkled patent, slim heel", desc:"A sharp pointed mule in soft crinkled patent. Comes in sky blue and blush pink.", item:"N1", imgs:3},
   {id:"r2",  n:2, name:"Lace Glint Mule",         cat:"Mules",        colours:["Nude"],                     price:3400, left:1, sizes:[37], note:"Mesh upper with crystal studs, kitten heel", desc:"Sheer nude mesh scattered with tiny crystals, on a low kitten heel.", item:"720-3", imgs:1},
-  {id:"r7",  n:2, name:"Rivet Buckle Mule",       cat:"Mules",        colours:["Black","Denim"],            price:3540, left:2, sizes:[38,39], note:"Square toe, silver rivets and buckle, sculpted heel", desc:"A square-toe mule with silver rivets and a chunky buckle. In black leather and washed denim.", item:"88-13", imgs:2},
-  {id:"r8",  n:2, name:"Buckle Peep Mule",        cat:"Mules",        colours:["Black"],                    price:2590, left:2, sizes:[37,39], note:"Open toe, silver buckles, stiletto", desc:"Black leather with antique silver buckles and an open toe. Edgy and easy.", item:"603", imgs:1},
+  {id:"r7",  n:2, name:"Rivet Buckle Mule",       cat:"Mules",        colours:["Black","Denim"], soldCols:["Denim"],            price:3540, left:1, sizes:[38], note:"Square toe, silver rivets and buckle, sculpted heel", desc:"A square-toe mule with silver rivets and a chunky buckle. In black leather and washed denim.", item:"88-13", imgs:2},
+  {id:"r8",  n:2, name:"Buckle Peep Mule",        cat:"Mules",        colours:["Black"],                    price:2590, left:1, sizes:[37], note:"Open toe, silver buckles, stiletto", desc:"Black leather with antique silver buckles and an open toe. Edgy and easy.", item:"603", imgs:1},
   {id:"r12", n:2, name:"Studded Nude Thong",      cat:"Mules",        colours:["Nude"],                     price:2630, left:1, sizes:[37], note:"Thong strap, stud detail, low heel", desc:"A soft nude thong mule edged in small studs. The quiet pair that goes with everything.", item:"97912381675", imgs:1},
   {id:"r3",  n:2, name:"Pebble Stud Thong",       cat:"Mules",        colours:["Chocolate suede"],          price:3330, left:1, sizes:[36], note:"Suede, gold pebble studs, stiletto", desc:"Chocolate suede covered in gold pebble studs, on a slim stiletto.", item:"", imgs:1},
   {id:"r23", n:2, name:"Pearl Point Mule",        cat:"Mules",        colours:["Black"],                    price:2600, left:2, sizes:[36,38], note:"Pointed toe, pearl detail, stiletto", desc:"A black pointed mule finished with a single pearl. Simple and sharp.", item:"", imgs:1},
   {id:"r27", n:2, name:"Silver Stud Thong Mule",  cat:"Mules",        colours:["Silver"],                   price:2630, left:2, sizes:[36,37], note:"Metallic thong, studs, sculpted heel", desc:"A silver thong mule with studs and a curved sculpted heel.", item:"", imgs:1},
-  {id:"r32", n:2, name:"Satin Square Mule",       cat:"Mules",        colours:["Lime","Cocoa"],             price:2950, left:2, sizes:[37,38], note:"Satin upper, square toe, low heel", desc:"A square-toe satin mule in bright lime or warm cocoa.", item:"Y8937-1", imgs:3},
+  {id:"r32", n:2, name:"Satin Square Mule",       cat:"Mules",        colours:["Lime","Cocoa"], soldCols:["Cocoa"],             price:2950, left:1, sizes:[37,38], note:"Satin upper, square toe, low heel", desc:"A square-toe satin mule in bright lime or warm cocoa.", item:"Y8937-1", imgs:3},
 
   {id:"r11", n:1, name:"Gold Heel Slingback",     cat:"Heels",        colours:["Bordeaux patent","Black croc"], price:3300, left:2, sizes:[36,38], note:"Pointed toe, gold buckle, sculpted gold heel", desc:"A pointed slingback with a gold buckle and gold sculpted heel. In wine patent and black croc.", item:"Gold Heel", imgs:4},
   {id:"r4",  n:1, name:"Rosé Crystal Sandal",     cat:"Heels",        colours:["Rose satin"],               price:3460, left:1, sizes:[38], note:"Satin straps, crystal motif, stiletto", desc:"Fine rose satin straps with a crystal motif over the toes. Made for weddings.", item:"", imgs:1},
   {id:"r6",  n:1, name:"Two-Tone Strap Heel",     cat:"Heels",        colours:["Brown / cream","Black"],    price:2550, left:2, sizes:[35,37], note:"Pointed toe, cross strap, slim heel", desc:"A pointed heel with a contrast strap across the foot.", item:"MT-48", imgs:2},
   {id:"r9",  n:1, name:"Crystal Clasp Heel",      cat:"Heels",        colours:["Black"],                    price:3670, left:1, sizes:[37], note:"Pointed thong, crystal clasp, stiletto", desc:"A black pointed heel with a statement crystal clasp across the vamp.", item:"", imgs:1},
   {id:"r13", n:1, name:"Bordeaux Buckle Sandal",  cat:"Heels",        colours:["Burgundy"],                 price:3330, left:1, sizes:[38], note:"Patent straps, buckles, stiletto", desc:"Deep burgundy patent straps with small buckles, on a slim stiletto.", item:"193-3", imgs:1},
-  {id:"r15", n:1, name:"Fold Cuff Sandal",        cat:"Heels",        colours:["White","Black"],            price:2830, left:2, sizes:[37,39], note:"Folded ankle cuff, thin straps, stiletto", desc:"A strappy heel with a soft folded cuff around the ankle.", item:"1335", imgs:2},
+  {id:"r15", n:1, name:"Fold Cuff Sandal",        cat:"Heels",        colours:["White","Black"], soldCols:["Black"],            price:2830, left:1, sizes:[37], note:"Folded ankle cuff, thin straps, stiletto", desc:"A strappy heel with a soft folded cuff around the ankle.", item:"1335", imgs:2},
   {id:"r25", n:1, name:"Barely Thong Heel",       cat:"Heels",        colours:["Black"],                    price:3330, left:1, sizes:[36], note:"Knotted thong, long wrap ties, sculpted heel", desc:"Almost nothing there: a fine knotted thong and long wrap-around ties on a sculpted cut-out heel.", item:"T78", imgs:1},
   {id:"r26", n:1, name:"Snake Strap Heel",        cat:"Heels",        colours:["Black / snake","Brown / snake"], price:2690, left:3, sizes:[35,37,39], note:"Snake print toe, wide croc ankle strap", desc:"A pointed snake-print toe with a wide croc-effect ankle strap.", item:"", imgs:2},
   {id:"r35", n:1, name:"Charm Strap Heel",        cat:"Heels",        colours:["Black"],                    price:4100, left:1, sizes:[37], note:"Wrap straps with hanging charms, stiletto", desc:"Black wrap-around straps hung with small charms that move as you walk.", item:"1228-26", imgs:1},
 
   {id:"r22", n:3, name:"Spotted Lace-Up Wedge",   cat:"Wedges",       colours:["Spotted print","Black suede"], price:2690, left:3, sizes:[36,37,38], note:"Thong, wrap ankle ties, sculpted wedge", desc:"A thong wedge with long ties that wrap the ankle, on a sculpted wedge. In spotted print or black suede.", item:"94906121979", imgs:4},
   {id:"r14", n:3, name:"Pebble Toe-Ring Wedge",   cat:"Wedges",       colours:["Black / tan","Ivory / tan"], price:2490, left:2, sizes:[36,37], note:"Suede footbed, gold pebble toe ring, curved wedge", desc:"A tan suede footbed, a wide strap and a gold pebble toe ring on a glossy curved wedge.", item:"H118", imgs:3},
-  {id:"r31", n:3, name:"Raffia Twist Wedge",      cat:"Wedges",       colours:["Natural raffia"],           price:3080, left:1, sizes:[39], note:"Woven raffia straps, woven wedge", desc:"Twisted raffia straps on a woven wedge. Holiday in a shoe.", item:"Y6067-1", imgs:1},
+  {id:"r31", sold:true, n:3, name:"Raffia Twist Wedge",      cat:"Wedges",       colours:["Natural raffia"],           price:3080, left:1, sizes:[39], note:"Woven raffia straps, woven wedge", desc:"Twisted raffia straps on a woven wedge. Holiday in a shoe.", item:"Y6067-1", imgs:1},
 
-  {id:"r19", n:4, name:"Stud Strap Boot Sandal",  cat:"Boot Sandals", colours:["White","Black"],            price:4140, left:2, sizes:[36,38], note:"Slouch shaft, studded straps, thong sole", desc:"A slouchy shaft wrapped in studded straps over an open thong sandal.", item:"1602-3", imgs:1},
+  {id:"r19", n:4, name:"Stud Strap Boot Sandal",  cat:"Boot Sandals", colours:["White","Black"], soldCols:["White"],            price:4140, left:1, sizes:[38], note:"Slouch shaft, studded straps, thong sole", desc:"A slouchy shaft wrapped in studded straps over an open thong sandal.", item:"1602-3", imgs:1},
   {id:"r16", n:4, name:"Cream Slouch Boot Sandal",cat:"Boot Sandals", colours:["Cream"],                    price:4210, left:1, sizes:[36], note:"Slouch shaft, buckle straps, open sandal", desc:"Soft cream slouch shaft with buckle straps, open at the toe.", item:"A23-1", imgs:1},
   {id:"r17", n:4, name:"Noir Buckle Boot Sandal", cat:"Boot Sandals", colours:["Black","Green"],       price:4020, left:2, sizes:[37,39], note:"Buckled shaft, studded thong sandal. Black in 39, green in 37", desc:"A buckled shaft over a studded thong sandal. In black and green.", item:"6835-1", imgs:1},
   {id:"r18", n:4, name:"Fold-Down Thong Boot",    cat:"Boot Sandals", colours:["Black","Tan"],              price:4020, left:2, sizes:[36,37], note:"Fold-down suede shaft, thong sole", desc:"A suede shaft that folds down over a thong sole. Wear it up or slouched.", item:"515-1", imgs:1},
   {id:"r29", n:4, name:"Tan Slouch Boot Sandal",  cat:"Boot Sandals", colours:["Tan"],                      price:4230, left:1, sizes:[36], note:"Slouch suede shaft, open toe", desc:"A slouchy tan suede shaft on an open-toe sandal.", item:"A211-15", imgs:1},
   {id:"r5",  n:4, name:"Wrangler Boot Sandal",    cat:"Boot Sandals", colours:["Black","Tan"],              price:2970, left:3, sizes:[36,37], note:"Fold-over shaft, buckle, thong sole", desc:"A fold-over shaft with a buckle strap and a thong sole. In black and tan.", item:"94830415651", imgs:2},
 
-  {id:"r30", n:5, name:"Polka Knee Boot",         cat:"Boots",        colours:["White","Black"],            price:4030, left:2, sizes:[37,38], note:"Fold-over shaft, polka dots, pointed toe, stiletto", desc:"A pointed knee boot with a fold-over shaft, covered in polka dots.", item:"126-11", imgs:2},
-  {id:"r28", n:5, name:"Fold-Over Platform Boot", cat:"Boots",        colours:["Black"],                    price:4160, left:1, sizes:[36], note:"Fold-over shaft, buckles, chunky platform", desc:"A tall black boot with buckles and a fold-over shaft, on a chunky platform.", item:"772-1", imgs:1},
+  {id:"r30", n:5, name:"Polka Knee Boot",         cat:"Boots",        colours:["White","Black"], soldCols:["White"],            price:4030, left:1, sizes:[38], note:"Fold-over shaft, polka dots, pointed toe, stiletto", desc:"A pointed knee boot with a fold-over shaft, covered in polka dots.", item:"126-11", imgs:2},
+  {id:"r28", sold:true, n:5, name:"Fold-Over Platform Boot", cat:"Boots",        colours:["Black"],                    price:4160, left:1, sizes:[36], note:"Fold-over shaft, buckles, chunky platform", desc:"A tall black boot with buckles and a fold-over shaft, on a chunky platform.", item:"772-1", imgs:1},
 
   {id:"r34", n:6, name:"Cap-Toe Ballerina",       cat:"Flats & Slides", colours:["Navy tweed","Black"],     price:2770, left:2, sizes:[38,39], note:"Tweed upper, cap toe, bow", desc:"A cap-toe ballet flat with a little bow. The everyday pair.", item:"Y2367-1", imgs:3},
-  {id:"r33", n:6, name:"Cream Tie Ballet Flat",   cat:"Flats & Slides", colours:["Cream"],                  price:3550, left:1, sizes:[36], note:"Soft leather, ankle tie", desc:"A soft cream ballet flat with a slim tie. Light and pretty.", item:"Y5085-1", imgs:1},
+  {id:"r33", sold:true, n:6, name:"Cream Tie Ballet Flat",   cat:"Flats & Slides", colours:["Cream"],                  price:3550, left:1, sizes:[36], note:"Soft leather, ankle tie", desc:"A soft cream ballet flat with a slim tie. Light and pretty.", item:"Y5085-1", imgs:1},
   {id:"r24", n:6, name:"Twist Puff Sandal",       cat:"Flats & Slides", colours:["Black","Blush"],          price:3320, left:2, sizes:[37,38], note:"Padded twisted straps, square toe", desc:"Puffy twisted straps on a square-toe sole. Soft, comfortable and bold.", item:"T7-9", imgs:3}
 ];
 
 const cats = ["Mules","Heels","Wedges","Boot Sandals","Boots","Flats & Slides"];
 const ALL_SIZES = [35,36,37,38,39,40];
 const inr = n => "₹" + n.toLocaleString("en-IN");
-const rarity = p => p.left === 1 ? "Last pair" : `${p.left} pairs left`;
-const GALLERY = {"r10":[["hz-r10-1.jpg","Blush pink","hero"],["st-r10-2.jpg","Blush pink","photo"],["st-r10-3.jpg","Blush pink","photo"],["hz-r10-2.jpg","Sky blue","hero"],["st-r10-5.jpg","Sky blue","photo"],["st-r10-6.jpg","Sky blue","photo"],["st-r10-7.jpg","Sky blue","photo"],["st-r10-8.jpg","Sky blue","photo"]],"r2":[["hz-r2-1.jpg","","hero"],["st-r2-2.jpg","","photo"],["st-r2-3.jpg","","photo"],["st-r2-4.jpg","","photo"],["st-r2-5.jpg","","photo"]],"r7":[["hz-r7-1.jpg","Black","hero"],["st-r7-2.jpg","Black","photo"],["st-r7-3.jpg","Black","photo"],["hz-r7-2.jpg","Denim","hero"],["st-r7-5.jpg","Denim","photo"],["st-r7-6.jpg","Denim","photo"],["st-r7-7.jpg","Denim","photo"]],"r8":[["hz-r8-1.jpg","","hero"],["st-r8-2.jpg","","photo"],["st-r8-3.jpg","","photo"],["st-r8-4.jpg","","photo"]],"r12":[["hz-r12-1.jpg","","hero"],["st-r12-2.jpg","","photo"],["st-r12-3.jpg","","photo"],["st-r12-4.jpg","","photo"],["st-r12-5.jpg","","photo"],["st-r12-6.jpg","","photo"]],"r3":[["hz-r3-1.jpg","","hero"],["st-r3-2.jpg","","photo"],["st-r3-3.jpg","","photo"],["st-r3-4.jpg","","photo"]],"r23":[["hz-r23-1.jpg","","hero"],["st-r23-2.jpg","","photo"],["st-r23-3.jpg","","photo"],["st-r23-4.jpg","","photo"]],"r27":[["hz-r27-1.jpg","","hero"],["st-r27-2.jpg","","photo"],["st-r27-3.jpg","","photo"]],"r32":[["hz-r32-1.jpg","Lime","hero"],["st-r32-2.jpg","Lime","photo"],["st-r32-3.jpg","Lime","photo"],["st-r32-4.jpg","Lime","photo"],["hz-r32-2.jpg","Cocoa","hero"],["st-r32-6.jpg","Cocoa","photo"],["st-r32-7.jpg","Cocoa","photo"],["st-r32-8.jpg","Cocoa","photo"]],"r11":[["hz-r11-1.jpg","Bordeaux patent","hero"],["st-r11-2.jpg","Bordeaux patent","photo"],["st-r11-3.jpg","Bordeaux patent","photo"],["st-r11-4.jpg","Bordeaux patent","photo"],["hz-r11-2.jpg","Black croc","hero"],["st-r11-6.jpg","Black croc","photo"],["st-r11-7.jpg","Black croc","photo"],["st-r11-8.jpg","Black croc","photo"]],"r4":[["hz-r4-1.jpg","","hero"],["st-r4-2.jpg","","photo"],["st-r4-3.jpg","","photo"],["st-r4-4.jpg","","photo"]],"r6":[["hz-r6-1.jpg","Brown / cream","hero"],["st-r6-2.jpg","Brown / cream","photo"],["st-r6-3.jpg","Brown / cream","photo"],["hz-r6-2.jpg","Black","hero"],["st-r6-5.jpg","Black","photo"],["st-r6-6.jpg","Black","photo"]],"r9":[["hz-r9-1.jpg","","hero"],["st-r9-2.jpg","","photo"],["st-r9-3.jpg","","photo"],["st-r9-4.jpg","","photo"]],"r13":[["hz-r13-1.jpg","","hero"],["st-r13-2.jpg","","photo"],["st-r13-3.jpg","","photo"]],"r15":[["hz-r15-1.jpg","White","hero"],["st-r15-2.jpg","White","photo"],["st-r15-3.jpg","White","photo"],["hz-r15-2.jpg","Black","hero"],["st-r15-5.jpg","Black","photo"],["st-r15-6.jpg","Black","photo"]],"r25":[["hz-r25-1.jpg","","hero"],["st-r25-2.jpg","","photo"],["st-r25-3.jpg","","photo"],["st-r25-4.jpg","","photo"],["st-r25-5.jpg","","photo"],["st-r25-6.jpg","","photo"]],"r26":[["hz-r26-1.jpg","Brown / snake","hero"],["st-r26-2.jpg","Brown / snake","photo"],["st-r26-3.jpg","Brown / snake","photo"],["hz-r26-2.jpg","Black / snake","hero"],["st-r26-5.jpg","Black / snake","photo"],["st-r26-6.jpg","Black / snake","photo"]],"r35":[["hz-r35-1.jpg","","hero"],["st-r35-2.jpg","","photo"],["st-r35-3.jpg","","photo"],["st-r35-4.jpg","","photo"]],"r22":[["hz-r22-1.jpg","Spotted print","hero"],["st-r22-2.jpg","Spotted print","photo"],["hz-r22-2.jpg","Black suede","hero"]],"r14":[["hz-r14-1.jpg","Black / tan","hero"],["st-r14-2.jpg","Black / tan","photo"],["st-r14-3.jpg","Black / tan","photo"],["st-r14-4.jpg","Black / tan","photo"],["hz-r14-2.jpg","Ivory / tan","hero"],["st-r14-6.jpg","Ivory / tan","photo"],["st-r14-7.jpg","Ivory / tan","photo"],["st-r14-8.jpg","Ivory / tan","photo"]],"r31":[["hz-r31-1.jpg","","hero"],["st-r31-2.jpg","","photo"],["st-r31-3.jpg","","photo"]],"r19":[["hz-r19-1.jpg","White","hero"],["st-r19-2.jpg","White","photo"],["st-r19-3.jpg","White","photo"],["hz-r19-2.jpg","Black","hero"],["st-r19-5.jpg","Black","photo"],["st-r19-6.jpg","Black","photo"],["st-r19-7.jpg","Black","photo"]],"r16":[["hz-r16-1.jpg","","hero"],["st-r16-2.jpg","","photo"],["st-r16-3.jpg","","photo"],["st-r16-4.jpg","","photo"]],"r17":[["hz-r17-1.jpg","Black","hero"],["st-r17-2.jpg","Black","photo"],["st-r17-3.jpg","Black","photo"],["hz-r17-2.jpg","Green","hero"],["st-r17-5.jpg","Green","photo"],["st-r17-6.jpg","Green","photo"]],"r18":[["hz-r18-1.jpg","Black","hero"],["st-r18-2.jpg","Black","photo"],["st-r18-3.jpg","Black","photo"],["st-r18-4.jpg","Black","photo"],["hz-r18-2.jpg","Tan","hero"],["st-r18-6.jpg","Tan","photo"],["st-r18-7.jpg","Tan","photo"],["st-r18-8.jpg","Tan","photo"]],"r29":[["hz-r29-1.jpg","","hero"],["st-r29-2.jpg","","photo"],["st-r29-3.jpg","","photo"],["st-r29-4.jpg","","photo"]],"r5":[["hz-r5-1.jpg","Black","hero"],["st-r5-2.jpg","Black","photo"],["st-r5-3.jpg","Black","photo"],["st-r5-4.jpg","Black","photo"],["hz-r5-2.jpg","Tan","hero"],["st-r5-6.jpg","Tan","photo"],["st-r5-7.jpg","Tan","photo"],["st-r5-8.jpg","Tan","photo"]],"r30":[["hz-r30-1.jpg","White","hero"],["st-r30-2.jpg","White","photo"],["st-r30-3.jpg","White","photo"],["st-r30-4.jpg","White","photo"],["st-r30-5.jpg","Black","photo"],["st-r30-6.jpg","Black","photo"]],"r28":[["hz-r28-1.jpg","","hero"],["st-r28-2.jpg","","photo"],["st-r28-3.jpg","","photo"]],"r34":[["hz-r34-1.jpg","Navy tweed","hero"],["st-r34-2.jpg","Navy tweed","photo"],["st-r34-3.jpg","Navy tweed","photo"],["st-r34-4.jpg","Navy tweed","photo"],["hz-r34-2.jpg","Black","hero"],["st-r34-6.jpg","Black","photo"],["st-r34-7.jpg","Black","photo"],["st-r34-8.jpg","Black","photo"]],"r33":[["hz-r33-1.jpg","","hero"],["st-r33-2.jpg","","photo"]],"r24":[["hz-r24-1.jpg","Black","hero"],["st-r24-2.jpg","Black","photo"],["st-r24-3.jpg","Black","photo"],["hz-r24-2.jpg","Blush","hero"],["st-r24-5.jpg","Blush","photo"],["st-r24-6.jpg","Blush","photo"]]};
+const rarity = p => p.sold ? "Sold out" : p.left === 1 ? "Last pair" : `${p.left} pairs left`;
+const ptag = p => p.sold ? '<span class="tag sold">Sold out</span>' : p.left===1 ? '<span class="tag">Last pair</span>' : '';
+const soldLast = l => [...l.filter(p=>!p.sold), ...l.filter(p=>p.sold)];
+const GALLERY = {"r10":[["hz-r10-1.jpg","Blush pink","hero"],["st-r10-2.jpg","Blush pink","photo"],["st-r10-3.jpg","Blush pink","photo"],["hz-r10-2.jpg","Sky blue","hero"],["st-r10-5.jpg","Sky blue","photo"],["st-r10-6.jpg","Sky blue","photo"],["st-r10-7.jpg","Sky blue","photo"],["st-r10-8.jpg","Sky blue","photo"]],"r2":[["hz-r2-1.jpg","","hero"],["st-r2-2.jpg","","photo"],["st-r2-3.jpg","","photo"],["st-r2-4.jpg","","photo"],["st-r2-5.jpg","","photo"]],"r7":[["hz-r7-1.jpg","Black","hero"],["st-r7-2.jpg","Black","photo"],["st-r7-3.jpg","Black","photo"],["hz-r7-2.jpg","Denim","hero"],["st-r7-5.jpg","Denim","photo"],["st-r7-6.jpg","Denim","photo"],["st-r7-7.jpg","Denim","photo"]],"r8":[["hz-r8-1.jpg","","hero"],["st-r8-2.jpg","","photo"],["st-r8-3.jpg","","photo"],["st-r8-4.jpg","","photo"]],"r12":[["hz-r12-1.jpg","","hero"],["st-r12-2.jpg","","photo"],["st-r12-3.jpg","","photo"],["st-r12-4.jpg","","photo"],["st-r12-5.jpg","","photo"],["st-r12-6.jpg","","photo"]],"r3":[["hz-r3-1.jpg","","hero"],["st-r3-2.jpg","","photo"],["st-r3-3.jpg","","photo"],["st-r3-4.jpg","","photo"]],"r23":[["hz-r23-1.jpg","","hero"],["st-r23-2.jpg","","photo"],["st-r23-3.jpg","","photo"],["st-r23-4.jpg","","photo"]],"r27":[["hz-r27-1.jpg","","hero"],["st-r27-2.jpg","","photo"],["st-r27-3.jpg","","photo"]],"r32":[["hz-r32-1.jpg","Lime","hero"],["st-r32-2.jpg","Lime","photo"],["st-r32-3.jpg","Lime","photo"],["st-r32-4.jpg","Lime","photo"],["hz-r32-2.jpg","Cocoa","hero"],["st-r32-6.jpg","Cocoa","photo"],["st-r32-7.jpg","Cocoa","photo"],["st-r32-8.jpg","Cocoa","photo"]],"r11":[["hz-r11-1.jpg","Bordeaux patent","hero"],["st-r11-2.jpg","Bordeaux patent","photo"],["st-r11-3.jpg","Bordeaux patent","photo"],["st-r11-4.jpg","Bordeaux patent","photo"],["hz-r11-2.jpg","Black croc","hero"],["st-r11-6.jpg","Black croc","photo"],["st-r11-7.jpg","Black croc","photo"],["st-r11-8.jpg","Black croc","photo"]],"r4":[["hz-r4-1.jpg","","hero"],["st-r4-2.jpg","","photo"],["st-r4-3.jpg","","photo"],["st-r4-4.jpg","","photo"]],"r6":[["hz-r6-1.jpg","Brown / cream","hero"],["st-r6-2.jpg","Brown / cream","photo"],["st-r6-3.jpg","Brown / cream","photo"],["hz-r6-2.jpg","Black","hero"],["st-r6-5.jpg","Black","photo"],["st-r6-6.jpg","Black","photo"]],"r9":[["hz-r9-1.jpg","","hero"],["st-r9-2.jpg","","photo"],["st-r9-3.jpg","","photo"],["st-r9-4.jpg","","photo"]],"r13":[["hz-r13-1.jpg","","hero"],["st-r13-2.jpg","","photo"],["st-r13-3.jpg","","photo"]],"r15":[["hz-r15-1.jpg","White","hero"],["st-r15-2.jpg","White","photo"],["st-r15-3.jpg","White","photo"],["hz-r15-2.jpg","Black","hero"],["st-r15-5.jpg","Black","photo"],["st-r15-6.jpg","Black","photo"]],"r25":[["hz-r25-1.jpg","","hero"],["st-r25-2.jpg","","photo"],["st-r25-3.jpg","","photo"],["st-r25-4.jpg","","photo"],["st-r25-5.jpg","","photo"],["st-r25-6.jpg","","photo"]],"r26":[["hz-r26-1.jpg","Brown / snake","hero"],["st-r26-2.jpg","Brown / snake","photo"],["st-r26-3.jpg","Brown / snake","photo"],["hz-r26-2.jpg","Black / snake","hero"],["st-r26-5.jpg","Black / snake","photo"],["st-r26-6.jpg","Black / snake","photo"]],"r35":[["hz-r35-1.jpg","","hero"],["st-r35-2.jpg","","photo"],["st-r35-3.jpg","","photo"],["st-r35-4.jpg","","photo"]],"r22":[["hz-r22-1.jpg","Spotted print","hero"],["st-r22-2.jpg","Spotted print","photo"],["hz-r22-2.jpg","Black suede","hero"]],"r14":[["hz-r14-1.jpg","Black / tan","hero"],["st-r14-2.jpg","Black / tan","photo"],["st-r14-3.jpg","Black / tan","photo"],["st-r14-4.jpg","Black / tan","photo"],["hz-r14-2.jpg","Ivory / tan","hero"],["st-r14-6.jpg","Ivory / tan","photo"],["st-r14-7.jpg","Ivory / tan","photo"],["st-r14-8.jpg","Ivory / tan","photo"]],"r31":[["hz-r31-1.jpg","","hero"],["st-r31-2.jpg","","photo"],["st-r31-3.jpg","","photo"]],"r19":[["hz-r19-1.jpg","White","hero"],["st-r19-2.jpg","White","photo"],["st-r19-3.jpg","White","photo"],["hz-r19-2.jpg","Black","hero"],["st-r19-5.jpg","Black","photo"],["st-r19-6.jpg","Black","photo"],["st-r19-7.jpg","Black","photo"]],"r16":[["hz-r16-1.jpg","","hero"],["st-r16-2.jpg","","photo"],["st-r16-3.jpg","","photo"],["st-r16-4.jpg","","photo"]],"r17":[["hz-r17-1.jpg","Black","hero"],["st-r17-2.jpg","Black","photo"],["st-r17-3.jpg","Black","photo"],["hz-r17-2.jpg","Green","hero"],["st-r17-5.jpg","Green","photo"],["st-r17-6.jpg","Green","photo"]],"r18":[["hz-r18-1.jpg","Black","hero"],["st-r18-2.jpg","Black","photo"],["st-r18-3.jpg","Black","photo"],["st-r18-4.jpg","Black","photo"],["hz-r18-2.jpg","Tan","hero"],["st-r18-6.jpg","Tan","photo"],["st-r18-7.jpg","Tan","photo"],["st-r18-8.jpg","Tan","photo"]],"r29":[["hz-r29-1.jpg","","hero"],["st-r29-2.jpg","","photo"],["st-r29-3.jpg","","photo"],["st-r29-4.jpg","","photo"]],"r5":[["hz-r5-1.jpg","Black","hero"],["st-r5-2.jpg","Black","photo"],["st-r5-3.jpg","Black","photo"],["st-r5-4.jpg","Black","photo"],["hz-r5-2.jpg","Tan","hero"],["st-r5-6.jpg","Tan","photo"],["st-r5-7.jpg","Tan","photo"],["st-r5-8.jpg","Tan","photo"]],"r30":[["hz-r30-1.jpg","White","hero"],["st-r30-2.jpg","White","photo"],["st-r30-3.jpg","White","photo"],["st-r30-4.jpg","White","photo"],["hz-r30-2.jpg","Black","hero"],["st-r30-5.jpg","Black","photo"],["st-r30-6.jpg","Black","photo"]],"r28":[["hz-r28-1.jpg","","hero"],["st-r28-2.jpg","","photo"],["st-r28-3.jpg","","photo"]],"r34":[["hz-r34-1.jpg","Navy tweed","hero"],["st-r34-2.jpg","Navy tweed","photo"],["st-r34-3.jpg","Navy tweed","photo"],["st-r34-4.jpg","Navy tweed","photo"],["hz-r34-2.jpg","Black","hero"],["st-r34-6.jpg","Black","photo"],["st-r34-7.jpg","Black","photo"],["st-r34-8.jpg","Black","photo"]],"r33":[["hz-r33-1.jpg","","hero"],["st-r33-2.jpg","","photo"]],"r24":[["hz-r24-1.jpg","Black","hero"],["st-r24-2.jpg","Black","photo"],["st-r24-3.jpg","Black","photo"],["hz-r24-2.jpg","Blush","hero"],["st-r24-5.jpg","Blush","photo"],["st-r24-6.jpg","Blush","photo"]]};
 const HEX = {"Green":"#7d8a57","Sky blue":"#a9c6dd","Blush pink":"#e9c7c4","Blush":"#e6c3bc","Black":"#1c1c1f","Denim":"#8eaac6","Lime":"#bcd96c","Cocoa":"#7a4a3a",
   "Bordeaux patent":"#6b1a2a","Black croc":"#232326","Brown / cream":["#6b4a35","#efe6d6"],"White":"#f7f5f0","Black / snake":["#1c1c1f","#bdb5a5"],
   "Brown / snake":["#6b4a35","#bdb5a5"],"Spotted print":"dots","Black suede":"#262628","Black / tan":["#1c1c1f","#b4693f"],"Ivory / tan":["#f1ebde","#b4693f"],
   "Tan":"#b98a5e","Navy tweed":"#2f3d5c"};
-const cbadge = p => p.colours.length>1 ? `<span class="cbadge" aria-hidden="true">${p.colours.map(c=>swatch(c)).join("")}${p.colours.length} colours</span>` : "";
-const swatch = c => { const v = HEX[c] || "#ccc";
+const cbadge = p => p.colours.length>1 ? `<span class="cbadge" aria-hidden="true">${p.colours.map(c=>swatch(c, colSold(p,c))).join("")}${p.colours.length} colours</span>` : "";
+const swatch = (c, x) => { const v = HEX[c] || "#ccc";
   const bg = v === "dots" ? "background:#f6f4ef radial-gradient(circle,#111 1.4px,transparent 1.6px) 0 0/5px 5px"
     : Array.isArray(v) ? `background:linear-gradient(90deg,${v[0]} 50%,${v[1]} 50%)` : `background:${v}`;
-  return `<span class="sw" style="${bg}"></span>`; };
+  return `<span class="sw${x?' x':''}" style="${bg}"></span>`; };
 const SHELF = {"r10":"hz-r10-1-s.jpg","r2":"hz-r2-1-s.jpg","r7":"hz-r7-1-s.jpg","r8":"hz-r8-1-s.jpg","r12":"hz-r12-1-s.jpg","r3":"hz-r3-1-s.jpg","r23":"hz-r23-1-s.jpg","r27":"hz-r27-1-s.jpg","r32":"hz-r32-1-s.jpg","r11":"hz-r11-1-s.jpg","r4":"hz-r4-1-s.jpg","r6":"hz-r6-1-s.jpg","r9":"hz-r9-1-s.jpg","r13":"hz-r13-1-s.jpg","r15":"hz-r15-1-s.jpg","r25":"hz-r25-1-s.jpg","r26":"hz-r26-1-s.jpg","r35":"hz-r35-1-s.jpg","r22":"hz-r22-1-s.jpg","r14":"hz-r14-1-s.jpg","r31":"hz-r31-1-s.jpg","r19":"hz-r19-1-s.jpg","r16":"hz-r16-1-s.jpg","r17":"hz-r17-1-s.jpg","r18":"hz-r18-1-s.jpg","r29":"hz-r29-1-s.jpg","r5":"hz-r5-1-s.jpg","r30":"hz-r30-1-s.jpg","r28":"hz-r28-1-s.jpg","r34":"hz-r34-1-s.jpg","r33":"hz-r33-1-s.jpg","r24":"hz-r24-1-s.jpg"};
+// colours that have sold out stay on the page, after the colours still available, marked sold out
+const colSold = (p, c) => !!(p.soldCols && p.soldCols.includes(c));
+products.forEach(p => { if (!p.soldCols) return;
+  const g = GALLERY[p.id]; GALLERY[p.id] = [...g.filter(e => !colSold(p, e[1])), ...g.filter(e => colSold(p, e[1]))];
+  const h = GALLERY[p.id].find(e => e[2] === 'hero' && !colSold(p, e[1]));
+  if (h) SHELF[p.id] = h[0].replace(/\.jpg$/, '-s.jpg');
+  p.colours = [...p.colours.filter(c => !colSold(p, c)), ...p.colours.filter(c => colSold(p, c))]; });
 const label = p => `${p.name}${p.colours.length?', '+p.colours.join(' / '):''}`;
 // light copy (600px) for shelves and cards, full 1080px only where the image is shown large
 const img = (file, alt, lazy=true, sizes="(max-width:640px) 50vw, 300px") => `<img class="cut" src="img/s/${file}" srcset="img/s/${file} 600w, img/${file} 1080w" sizes="${sizes}" alt="${alt}" ${lazy?'loading="lazy"':'fetchpriority="high"'} decoding="async">`;
 const slug = c => c.toLowerCase().replace(/[^a-z]+/g,"-");
 const $ = id => document.getElementById(id);
-const totalPairs = products.reduce((a,p)=>a+p.left,0);
-$("introText").textContent = `${products.length} designs, ${totalPairs} pairs in all. One to three pairs of each, and we never restock. Tap any shoe on the shelf to see it up close.`;
+const totalPairs = products.filter(p=>!p.sold).reduce((a,p)=>a+p.left,0);
+const liveDesigns = products.filter(p=>!p.sold).length;
+$("introText").textContent = `${liveDesigns} designs, ${totalPairs} pairs available. One to three pairs of each, and we never restock. Tap any shoe on the shelf to see it up close.`;
 
 $("jump").innerHTML = cats.map(c => `<a href="#${slug(c)}">${c}</a>`).join("");
-$("menuList").innerHTML = cats.map(c => `<a href="#${slug(c)}">${c}</a>`).join("") + `<a href="#collection">Shop all</a>`;
+$("menuList").innerHTML = cats.map(c => `<a href="#${slug(c)}">${c}</a>`).join("") + `<a href="#collection">Shop all</a><a href="#policy">Shipping &amp; returns</a>`;
 const hdr = $("hdr"), heroEl = document.querySelector(".frame");
 const setHdr = () => hdr.classList.toggle("solid", !$("menu").hidden || window.scrollY > heroEl.offsetHeight - 70);
 window.addEventListener("scroll", setHdr, {passive:true}); setHdr();
 $("menuBtn").addEventListener("click", () => { const m = $("menu"); m.hidden = !m.hidden; $("menuBtn").setAttribute("aria-expanded", !m.hidden); $("menuBtn").textContent = m.hidden ? "Menu" : "Close"; setHdr(); });
 $("menuList").addEventListener("click", e => { if (e.target.closest("a")){ $("menu").hidden = true; $("menuBtn").textContent = "Menu"; $("menuBtn").setAttribute("aria-expanded", false); setHdr(); } });
 $("shelves").innerHTML = cats.map(c => {
-  const items = products.filter(p => p.cat === c);
+  const items = soldLast(products.filter(p => p.cat === c));
   return `<section class="shelf" id="${slug(c)}"><div class="wrap">
     <div class="shelf-head"><div><h2 style="display:inline">${c}</h2><span class="count">${items.length}</span></div>
       <div class="rail-nav"><button type="button" data-dir="-1" aria-label="Scroll ${c} left">←</button><button type="button" data-dir="1" aria-label="Scroll ${c} right">→</button></div></div>
-    <div class="rail">${items.map(p => `<button class="slot" type="button" data-id="${p.id}">
-        <div class="stage">${p.left===1?'<span class="tag">Last pair</span>':''}${cbadge(p)}${img(SHELF[p.id], label(p))}</div><div class="plank"></div><div class="lip"></div>
-        <div class="cap"><span class="nm">${p.name}</span><span class="pr">${inr(p.price)}</span>${p.colours.length>1?`<span class="sws" aria-label="${p.colours.length} colours: ${p.colours.join(', ')}">${p.colours.map(c=>swatch(c)).join("")}</span>`:""}</div></button>`).join("")}</div>
+    <div class="rail">${items.map(p => `<button class="slot${p.sold?' is-sold':''}" type="button" data-id="${p.id}">
+        <div class="stage">${ptag(p)}${cbadge(p)}${img(SHELF[p.id], label(p))}</div><div class="plank"></div><div class="lip"></div>
+        <div class="cap"><span class="nm">${p.name}</span><span class="pr">${inr(p.price)}</span>${p.colours.length>1?`<span class="sws" aria-label="${p.colours.length} colours: ${p.colours.join(', ')}">${p.colours.map(c=>swatch(c, colSold(p,c))).join("")}</span>`:""}</div></button>`).join("")}</div>
   </div></section>`;
 }).join("");
 document.querySelectorAll(".rail-nav button").forEach(b => b.addEventListener("click", () => {
@@ -404,22 +458,23 @@ function renderGrid(){
   if (sort === "lo") list = [...list].sort((a,b)=>a.price-b.price);
   if (sort === "hi") list = [...list].sort((a,b)=>b.price-a.price);
   if (sort === "last") list = [...list].sort((a,b)=>a.left-b.left);
+  list = soldLast(list);
   $("resultCount").textContent = `${list.length} ${list.length===1?"design":"designs"}`;
-  $("grid").innerHTML = list.length ? list.map(p => `<div class="card" role="button" tabindex="0" aria-label="${p.name}" data-id="${p.id}">
-      <div class="ph">${p.left===1?'<span class="tag">Last pair</span>':''}${cbadge(p)}<div class="strip">${GALLERY[p.id].map((e,i)=>img(e[0], `${p.name}${e[1]?', '+e[1]:''}, photo ${i+1}`)).join("")}</div>${GALLERY[p.id].length>1?`<div class="cbar">${GALLERY[p.id].map((_,i)=>`<span class="${i?'':'on'}"></span>`).join("")}</div><button type="button" class="cnav l" data-cnav="-1" aria-label="Previous photo">←</button><button type="button" class="cnav r" data-cnav="1" aria-label="Next photo">→</button>`:""}</div>
+  $("grid").innerHTML = list.length ? list.map(p => `<div class="card${p.sold?' is-sold':''}" role="button" tabindex="0" aria-label="${p.name}${p.sold?', sold out':''}" data-id="${p.id}">
+      <div class="ph">${ptag(p)}${cbadge(p)}<div class="strip">${GALLERY[p.id].map((e,i)=>img(e[0], `${p.name}${e[1]?', '+e[1]:''}${colSold(p,e[1])?' (sold out)':''}, photo ${i+1}`).replace('class="cut"', colSold(p,e[1])?'class="cut soldph"':'class="cut"')).join("")}</div>${GALLERY[p.id].length>1?`<div class="cbar">${GALLERY[p.id].map((_,i)=>`<span class="${i?'':'on'}"></span>`).join("")}</div><button type="button" class="cnav l" data-cnav="-1" aria-label="Previous photo">←</button><button type="button" class="cnav r" data-cnav="1" aria-label="Next photo">→</button>`:""}</div>
       <span class="nm">${p.name}</span>
-      <span class="meta"><span>${p.colours.length>1?p.colours.length+' colours':p.colours[0]}</span><span>${inr(p.price)}</span></span>${p.colours.length>1?`<span class="sws" role="group" aria-label="Colours">${p.colours.map((c,k)=>{const gi=GALLERY[p.id].findIndex(e=>e[1]===c);return gi>=0?`<button type="button" aria-pressed="${k===0}" aria-label="${c}" title="${c}" data-card-col="${gi}">${swatch(c)}</button>`:`<span title="${c}">${swatch(c)}</span>`}).join("")}</span>`:""}</div>`).join("")
+      <span class="meta"><span>${p.colours.length>1?p.colours.length+' colours':p.colours[0]}</span><span>${inr(p.price)}</span></span>${p.colours.length>1?`<span class="sws" role="group" aria-label="Colours">${p.colours.map((c,k)=>{const gi=GALLERY[p.id].findIndex(e=>e[1]===c);return gi>=0?`<button type="button" aria-pressed="${k===0}" aria-label="${c}${colSold(p,c)?', sold out':''}" title="${c}${colSold(p,c)?' (sold out)':''}" data-card-col="${gi}">${swatch(c, colSold(p,c))}</button>`:`<span title="${c}">${swatch(c, colSold(p,c))}</span>`}).join("")}</span>`:""}</div>`).join("")
     : `<div class="empty">Nothing in this style right now.</div>`;
 }
 renderGrid();
 
 let current = null, size = null, reserved = new Map(), lastFocus = null;
 const WA = "918293929011";
-try { JSON.parse(localStorage.getItem("vybe-reserved-v3")||"[]").forEach(([id, sz, col]) => { if (products.find(p => p.id === id)) reserved.set(id, {size: sz, colour: col}); }); } catch(e){}
+try { JSON.parse(localStorage.getItem("vybe-reserved-v3")||"[]").forEach(([id, sz, col]) => { if (products.find(p => p.id === id && !p.sold)) reserved.set(id, {size: sz, colour: col}); }); } catch(e){}
 const saveBag = () => { try { localStorage.setItem("vybe-reserved-v3", JSON.stringify([...reserved].map(([id, v]) => [id, v.size, v.colour]))); } catch(e){} };
 const updateBag = () => { $("bagCount").textContent = reserved.size; if (current){ $("dBag").hidden = !reserved.size; $("dBag").textContent = `View bag (${reserved.size}) and buy on WhatsApp`; } };
 updateBag();
-const order = () => cats.flatMap(c => products.filter(p => p.cat === c));
+const order = () => cats.flatMap(c => soldLast(products.filter(p => p.cat === c)));
 function open(id, start = 0){
   const p = products.find(x => x.id === id); if (!p) return;
   current = p; size = null;
@@ -428,23 +483,26 @@ function open(id, start = 0){
   const g = GALLERY[p.id];
   const alt = (e,i) => `${p.name}${e[1]?', '+e[1]:''}, ${e[2]==='detail'?'close-up':e[2]==='hero'?'side view':'view '+(i+1)}`;
   const cols = [...new Set(g.map(e => e[1]).filter(Boolean))];
-  $("dHero").innerHTML = `<div class="galwrap"><div class="gal" id="gal">${g.map((e,i)=>`<div class="fr">${img(e[0], alt(e,i), i>1, "(max-width:640px) 100vw, 560px")}</div>`).join("")}</div>`
+  $("dHero").innerHTML = `<div class="galwrap"><div class="gal" id="gal">${g.map((e,i)=>`<div class="fr${colSold(p,e[1])?' sold':''}">${img(e[0], alt(e,i), i>1, "(max-width:640px) 100vw, 560px")}${colSold(p,e[1])?`<span class="frsold">${e[1]} · Sold out</span>`:''}</div>`).join("")}</div>`
     + `<div class="pager"><button type="button" data-step="-1" aria-label="Previous shoe">←</button><button type="button" data-step="1" aria-label="Next shoe">→</button></div></div>`
     + (g.length>1 ? `<div class="thumbs" id="thumbs">${g.map((e,i)=>`<button type="button" aria-label="Show ${alt(e,i)}" aria-current="${i===0}" data-ph="${i}"><img src="img/${e[0]}" alt="" loading="lazy"></button>`).join("")}</div>` : "")
-    + (cols.length>1 ? `<div class="swatches" id="swatches"><span class="lab">Colour: <b id="swName">${cols[0]}</b></span><span class="row">${cols.map((c,k)=>`<button type="button" aria-pressed="${k===0}" aria-label="${c}" title="${c}" data-col="${g.findIndex(e=>e[1]===c)}">${swatch(c)}</button>`).join("")}</span></div>`
+    + (cols.length>1 ? `<div class="swatches" id="swatches"><span class="lab">Colour: <b id="swName">${cols[0]}</b><span id="swSold" class="swsold" hidden> · sold out</span></span><span class="row">${cols.map((c,k)=>`<button type="button" aria-pressed="${k===0}" aria-label="${c}${colSold(p,c)?', sold out':''}" title="${c}${colSold(p,c)?' (sold out)':''}" data-col="${g.findIndex(e=>e[1]===c)}">${swatch(c, colSold(p,c))}</button>`).join("")}</span></div>`
        : p.colours.length>1 ? `<div class="swatches"><span class="lab">Colours: <b>${p.colours.join(', ')}</b></span><span class="row">${p.colours.map(c=>`<span style="padding:3px;line-height:0">${swatch(c)}</span>`).join("")}</span></div>` : "");
   $("dTitle").textContent = p.name;
   $("dPrice").textContent = inr(p.price);
   $("dRarity").textContent = rarity(p);
   $("dDesc").textContent = p.desc;
-  $("dSpecs").innerHTML = [["Colours",p.colours.join(", ")],["Details",p.note],["Pairs left",p.left],["Sizes in stock",p.sizes.join(", ")]].concat(p.item?[["Style no.",p.item]]:[]).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("");
-  $("dSizes").innerHTML = ALL_SIZES.map(s => `<button class="size" type="button" aria-pressed="false" ${p.sizes.includes(s)?"":"disabled"} data-s="${s}">${s}</button>`).join("");
+  $("dSpecs").innerHTML = [["Colours",p.colours.map(c=>colSold(p,c)?`${c} (sold out)`:c).join(", ")],["Details",p.note],["Pairs left",p.sold?"Sold out":p.left],["Sizes in stock",p.sold?"None":p.sizes.join(", ")]].concat(p.item?[["Style no.",p.item]]:[]).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("");
+  $("dSizes").innerHTML = ALL_SIZES.map(s => `<button class="size" type="button" aria-pressed="false" ${p.sizes.includes(s)&&!p.sold?"":"disabled"} data-s="${s}">${s}</button>`).join("");
   const r = reserved.get(p.id);
   $("dReserve").textContent = r ? `Buy now · size ${r.size}` : "Buy now";
   $("dAdd").textContent = r ? `In your bag · size ${r.size} · remove` : "Add to bag";
-  $("dUrg").textContent = `${p.left === 1 ? "Last pair" : `Only ${p.left} pairs left`} · never restocked`;
+  $("dUrg").textContent = p.sold ? "Sold out · never restocked. Join the Vybe Co. Club for early access to new drops." : `${p.left === 1 ? "Last pair" : `Only ${p.left} pairs left`} · never restocked`;
+  $("dReserve").disabled = $("dAdd").disabled = !!p.sold;
+  if (p.sold){ $("dReserve").textContent = "Sold out"; $("dAdd").hidden = true; } else $("dAdd").hidden = false;
   $("dBag").hidden = !reserved.size;
   $("dBag").textContent = `View bag (${reserved.size}) and buy on WhatsApp`;
+  setColState();
   if ($("sheet").hidden){
     lastFocus = document.activeElement;
     $("scrim").hidden = $("sheet").hidden = false;
@@ -454,6 +512,16 @@ function open(id, start = 0){
   }
   $("sheet").scrollTop = 0;
   if (start) requestAnimationFrame(() => { const g = $("gal"); g.scrollTo({left: g.clientWidth * start}); });
+}
+// a sold-out colour can be looked at but not bought
+function setColState(){
+  const p = current; if (!p || p.sold) return;
+  const c = $("swName") ? $("swName").textContent : null; const gone = !!c && colSold(p, c);
+  if ($("swSold")) $("swSold").hidden = !gone;
+  $("dReserve").disabled = $("dAdd").disabled = gone;
+  const r = reserved.get(p.id);
+  $("dReserve").textContent = gone ? `${c} is sold out` : r ? `Buy now · size ${r.size}` : "Buy now";
+  $("dAdd").hidden = gone;
 }
 function close(){
   $("scrim").classList.remove("show"); $("sheet").classList.remove("show");
@@ -486,7 +554,7 @@ $("dHero").addEventListener("scroll", e => {
   const i = Math.round(e.target.scrollLeft / e.target.clientWidth);
   $("thumbs").querySelectorAll("button").forEach((b,k) => b.setAttribute("aria-current", k===i));
   const t = $("thumbs").children[i]; if (t) t.scrollIntoView({block:"nearest", inline:"nearest"});
-  if ($("swatches") && $("swName")){ const c = GALLERY[current.id][i][1]; $("swName").textContent = c; $("swatches").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", GALLERY[current.id][+b.dataset.col][1] === c)); }
+  if ($("swatches") && $("swName")){ const c = GALLERY[current.id][i][1]; $("swName").textContent = c; $("swatches").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", GALLERY[current.id][+b.dataset.col][1] === c)); setColState(); }
 }, true);
 $("scrim").addEventListener("click", () => { if (!$("bag").hidden) closeBag(); else close(); });
 $("dClose").addEventListener("click", close);
@@ -562,6 +630,9 @@ $("copyWa").addEventListener("click", () => {
   try { navigator.clipboard.writeText("+918293929011").then(() => toast("Number copied"), fallback); } catch(e){ fallback(); }
 });
 $("bagBtn").addEventListener("click", openBag);
+document.addEventListener("click", e => { const a = e.target.closest("[data-policy]"); if (!a) return;
+  e.preventDefault(); if (!$("bag").hidden) closeBag(); if (!$("sheet").hidden) close();
+  setTimeout(() => $("policy").scrollIntoView({behavior:"smooth"}), 400); });
 let y0 = null;
 $("sheet").addEventListener("touchstart", e => { y0 = $("sheet").scrollTop === 0 ? e.touches[0].clientY : null; }, {passive:true});
 $("sheet").addEventListener("touchend", e => { if (y0 !== null && e.changedTouches[0].clientY - y0 > 90) close(); y0 = null; });
